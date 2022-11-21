@@ -8,6 +8,8 @@ interface OrdersBoardProps {
 }
 
 export function OrdersBoard({icon, title, orders}: OrdersBoardProps) {
+  function handleOpenModal () {}
+
   return (
     <Board>
       <header>
@@ -19,7 +21,7 @@ export function OrdersBoard({icon, title, orders}: OrdersBoardProps) {
       {orders.length > 0 &&
         <OrdersContainer>
           {orders.map(order => (
-            <button type='button' key={order._id}>
+            <button type='button' key={order._id} onClick={handleOpenModal}>
               <strong>Mesa {order.table}</strong>
               <span>{order.products.length} itens</span>
             </button>
