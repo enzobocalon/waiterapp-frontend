@@ -1,4 +1,3 @@
-import { orders } from '../../mocks/orders';
 import { Order } from '../../types/Order';
 import { Board, OrdersContainer } from './style';
 
