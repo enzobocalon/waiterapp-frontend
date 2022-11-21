@@ -1,11 +1,14 @@
+import { orders } from '../../mocks/orders';
+import { Order } from '../../types/Order';
 import { Board, OrdersContainer } from './style';
 
 interface OrdersBoardProps {
   icon: string,
-  title: string
+  title: string,
+  orders: Order[],
 }
 
-export function OrdersBoard({icon, title}: OrdersBoardProps) {
+export function OrdersBoard({icon, title, orders}: OrdersBoardProps) {
   return (
     <Board>
       <header>
@@ -14,16 +17,15 @@ export function OrdersBoard({icon, title}: OrdersBoardProps) {
         <span>(1)</span>
       </header>
 
-      <OrdersContainer>
-        <button type='button'>
-          <strong>Mesa 2</strong>
-          <span>2 itens</span>
-        </button>
-        <button type='button'>
-          <strong>Mesa 2</strong>
-          <span>2 itens</span>
-        </button>
-      </OrdersContainer>
+      {orders.length > 0 &&
+        <OrdersContainer>
+          {orders.map(order => (
+            <button type='button' key={order._id}>
+              <strong>Mesa {order.table}</strong>
+              <span>{order.products.length} itens</span>
+            </button>
+          ))}
+        </OrdersContainer>}
     </Board>
   );
 }
