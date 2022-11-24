@@ -18,9 +18,14 @@ export function OrdersBoard({icon, title, orders}: OrdersBoardProps) {
     setSelectedOrder(order);
   }
 
+  function handleCloseModal () {
+    setIsModalVisible(prev => !prev);
+    setSelectedOrder(null);
+  }
+
   return (
     <Board>
-      <OrderModal visible={isModalVisible} order={selectedOrder}/>
+      <OrderModal visible={isModalVisible} order={selectedOrder} onClose={handleCloseModal}/>
 
       <header>
         <span>{icon}</span>
