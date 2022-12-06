@@ -68,10 +68,14 @@ export function OrderModal({visible, order, onClose, onCancelOrder, isLoading}: 
           </div>
 
           <Actions>
-            <button type='button' className='primary' disabled={isLoading}>
-              <span>👩‍🍳</span>
-              <strong>Iniciar Produção</strong>
-            </button>
+            {
+              order.status !== 'DONE' && (
+                <button type='button' className='primary' disabled={isLoading}>
+                  <span>👩‍🍳</span>
+                  <strong>Iniciar Produção</strong>
+                </button>
+              )
+            }
 
             <button type='button' className='secondary' onClick={onCancelOrder} disabled={isLoading}>
               Cancelar pedido
