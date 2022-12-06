@@ -18,27 +18,13 @@ export function OrderModal({visible, order, onClose, onCancelOrder, isLoading, o
     return null;
   }
 
-  useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    }
-
-    document.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [onClose]);
-
   const total = order.products.reduce((total, {product, quantity}) => {
     return total + (product.price * quantity);
   }, 0);
 
   return (
-    <Overlay>
-      <ModalBody>
+    <Overlay onClick={onClose}>
+      <ModalBody onClick={(e) => e.stopPropagation()}>
         <header>
           <strong>Mesa 2</strong>
           <button type='button'>
