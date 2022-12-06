@@ -3,15 +3,10 @@ import { Container } from './style';
 import { useEffect, useState } from 'react';
 import { Order } from '../../types/Order';
 import { api } from '../../utils/api';
+import socketIo from 'socket.io-client';
 
 export function Orders() {
   const [orders, setOrders] = useState<Order[]>([]);
-
-  useEffect(() => {
-    api.get('/orders').then(({ data }) => {
-      setOrders(data);
-    });
-  }, []);
 
   const waiting = orders.filter(order => order.status === 'WAITING');
   const inProduction = orders.filter(order => order.status === 'IN_PRODUCTION');
@@ -28,6 +23,27 @@ export function Orders() {
         : order
     )));
   }
+
+  useEffect(() => {
+    const socket = socketIo('http://localhost:3001', {
+      transports: ['websocket']
+    });
+
+    socket.on('orders@new', (order) => {
+      setOrders(prevState => prevState.concat(order));
+    });
+
+    return () => {
+      socket.off('orders@new');
+    };
+
+  }, []);
+
+  useEffect(() => {
+    api.get('/orders').then(({ data }) => {
+      setOrders(data);
+    });
+  }, []);
 
   return (
     <Container>
