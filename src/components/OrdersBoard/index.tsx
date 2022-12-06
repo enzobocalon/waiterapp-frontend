@@ -3,6 +3,7 @@ import { Order } from '../../types/Order';
 import { api } from '../../utils/api';
 import { OrderModal } from '../OrderModal';
 import { Board, OrdersContainer } from './style';
+import { toast } from 'react-toastify';
 
 interface OrdersBoardProps {
   icon: string,
@@ -20,6 +21,7 @@ export function OrdersBoard({icon, title, orders, onCancelOrder}: OrdersBoardPro
     if (!selectedOrder) return;
     setIsLoading(true);
     await api.delete(`/orders/${selectedOrder._id}`);
+    toast.success(`O pedido da mesa ${selectedOrder.table} foi cancelado`);
     setIsLoading(false);
     setIsModalVisible(false);
     onCancelOrder(selectedOrder._id);
