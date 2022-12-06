@@ -10,9 +10,10 @@ interface OrdersBoardProps {
   title: string,
   orders: Order[],
   onCancelOrder: (orderId: string) => void;
+  onChangeOrderStatus: (orderId: string, status: Order['status']) => void
 }
 
-export function OrdersBoard({icon, title, orders, onCancelOrder}: OrdersBoardProps) {
+export function OrdersBoard({icon, title, orders, onCancelOrder, onChangeOrderStatus}: OrdersBoardProps) {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -37,6 +38,20 @@ export function OrdersBoard({icon, title, orders, onCancelOrder}: OrdersBoardPro
     setSelectedOrder(null);
   }
 
+  async function handleChangeOrderStatus() {
+    if (!selectedOrder) return;
+    setIsLoading(true);
+
+    const newStatus = selectedOrder.status === 'WAITING'
+      ? 'IN_PRODUCTION' : 'DONE';
+
+    await api.patch(`/orders/${selectedOrder._id}`, { status: newStatus });
+    toast.success(`O pedido da mesa ${selectedOrder.table} teve o status alterado.`);
+    onChangeOrderStatus(selectedOrder._id, newStatus);
+    setIsLoading(false);
+    setIsModalVisible(false);
+  }
+
   return (
     <Board>
       <OrderModal
@@ -45,6 +60,7 @@ export function OrdersBoard({icon, title, orders, onCancelOrder}: OrdersBoardPro
         onClose={handleCloseModal}
         onCancelOrder={handleCancelOrder}
         isLoading={isLoading}
+        onChangeOrderStatus={handleChangeOrderStatus}
       />
 
       <header>
