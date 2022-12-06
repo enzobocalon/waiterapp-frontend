@@ -117,7 +117,7 @@ export const Actions = styled.footer`
   display: flex;
   flex-direction: column;
   margin-top: 32px;
-  
+
   .primary {
     background-color: #333;
     border-radius: 48px;
@@ -137,5 +137,10 @@ export const Actions = styled.footer`
     background-color: transparent;
     border: 0;
     margin-top: 12px;
+  }
+
+  button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
   }
 `;
